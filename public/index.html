@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nutrition</title>
+        <link rel="stylesheet" href="./index.css" />
+        <style>
+            body{
+                margin:0px;
+                background-color: rgb(8 8 8);
+                color:white;
+            }
+
+            #header{
+                background-color: rgb(24, 34, 121);
+                display:flex;
+                justify-content: space-between;
+                align-items: center;
+                margin:0px;
+                height:70px;
+            }
+
+
+            #homepage{
+                font-size: 20px;
+                margin-left: 30px;
+            }
+
+            #links{
+                display:flex;
+                justify-content: space-between;
+                align-items: center;
+                width:200px;
+                height:100%;
+                font-size: 20px;
+                margin-right: 30px;
+            }
+
+            .nav-link{
+                padding:22px 10px;
+            }
+            .nav-link:hover{
+                cursor:pointer;
+                background-color: rgb(44, 57, 173);
+                text-decoration:none;
+            }
+
+            #big-card{
+                margin:40px auto;
+                background-color: black;
+                border-radius: 20px;
+                border:1px solid rgb(20 20 20);
+                width:80%;
+                max-width:800px;
+                height:800px;
+            }
+
+            h1 {
+                font-family:  monospace;
+                font-size:22px;
+                color:rgb(48, 60, 175);
+                text-align:center;
+                padding-top:30px;
+            }
+
+            h2{
+                color:rgb(48, 60, 175);
+                text-align:center;
+            }
+
+            #p{
+                margin:auto;
+                text-align: center;
+                max-width: 600px;
+            }
+
+            .form-card p {
+                display:inline;
+            }
+
+            p{
+                text-align: center;
+            }
+
+            form{
+                width:300px;
+                margin:50px auto;
+                padding:20px;
+            }
+
+            /* put everything in the correct place */
+            label[for="age"]{
+                position:relative;
+                left:20px;
+            }
+            label[for="height"]{
+                position:relative;
+                left:4px;
+            }
+            label[for="bf"]{
+                position:relative;
+                right:27px;
+            }
+
+            #hyper-div{
+                position:relative;
+                right:33px;
+            } 
+
+            #gender-div{
+                margin-bottom: 30px;
+            }
+
+            #age{
+                position:relative;
+                left:25px;
+            }
+            #weight{
+                position:relative;
+                left:6px;
+            }
+            #height-input{
+                position:relative;
+                left:8px;
+                display: inline;
+            }
+            #span-select{
+                display: none;
+            }
+            .height-select{
+                position: relative;
+                left:8px;
+                width:50px;
+                height:34px;
+            }
+            #activity{
+                position:relative;
+                left:20px;
+            }
+            #bf{
+                position:relative;
+                right:8px;
+            }
+
+            input[id="age"],[id="weight"],[id="height-input"],[id="bf"]{
+                width:40px;
+            }
+
+            input[type="number"]::-webkit-outer-spin-button,
+            input[type="number"]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type="number"] {
+                appearance: textfield;
+            }
+
+
+            input[type="number"]{
+                border-radius:5px;
+                border:1px solid black;
+                height:30px;
+                text-align:center;
+            }
+
+            select{
+                width:230px;
+                height:40px;
+                border-radius: 5px;
+            }
+
+            input[type="submit"]{
+                background-color: rgb(48, 60, 175);
+                border:none;
+                border-radius: 10px;
+                width:150px;
+                height:50px;
+                color:white;
+                font-size:20px;
+                display: block;
+                margin:auto;
+            }
+            input[type="submit"]:hover{
+                cursor:pointer;
+            }
+
+            .form-card{
+                margin-top:5px;
+                margin-bottom:5px;
+            }
+
+            hr {
+                border:none;
+                background-color:rgb(20 20 20);
+                width:80%;
+                height:1px;
+            }
+
+            #form-comment{
+                margin-top:35px;
+                font-size: 14px;
+                color:rgb(200 200 200);
+            }
+
+            #calc{
+                margin:auto;
+                margin-bottom:50px;
+                width:80%;
+                max-width:420px;
+                font-family: Arial;;
+            }
+
+            footer{
+                background-color: rgb(48, 60, 175);
+                margin:0px;
+                margin-top:30px;
+                padding:10px;
+                display:flex;
+                justify-content: space-between;
+            }
+
+            #copy{
+                color:rgb(150 150 150);
+                margin-left:30px;
+            }
+
+            #footer-links{
+                display:flex;
+                justify-content: space-around;
+                align-items: center;
+                width:300px;
+            }
+
+            a{
+                color:white;
+                text-decoration: none;
+            }
+
+            a:hover{
+                cursor:pointer;
+                text-decoration: underline;
+
+            }
+            
+
+        </style>
+    </head>
+    <body>
+
+        <div id="header">
+            <a id="homepage" href="/">NutritionProject</a>
+            <div id="links">
+                <a href="/about" class="nav-link">About</a>
+                <a href="/faq" class="nav-link">FAQ</a>
+                <a href="contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+        <div id="big-card">
+            <h1>Create a personalized diet plan specifically for you</h1>
+            <p id="p">Complete this formula to learn how many calories you burn per day. This calculator will also show you your BMI, BMR, your macros and many more to help you gain muscle!</p>
+            <form action="/results" method="post">
+                <!-- system -->
+                <div class="form-card">
+                    <p>System &nbsp;&nbsp;&nbsp;</p>
+                    <input id="metric" type="radio" name="system" value="metric" checked>Metric
+                    <!-- <label for="metric" name="radio">Metric</label> -->
+                    <input id="imperial" type="radio" name="system" value="imperial"> Imperial
+                    <!-- <label for="imperial" name="radio">Imperial</label> -->
+                </div>
+                <br />
+                <!-- gender -->
+                <div class="form-card" id="gender-div">
+                    <p>Gender &nbsp;&nbsp;&nbsp;</p>
+                    <input id="gender" type="radio" name="gender" value="male" checked>Male
+                    <!-- <label for="male">Male</label> -->
+                    <input id="gender" type="radio" name="gender" value="female">Female
+                    <!-- <label for="female">Female</label> -->
+                </div>
+                 <!-- weightLifting -->
+                 <div class="form-card" id="hyper-div">
+                    <p id="hyper">I lift weights &nbsp;&nbsp;&nbsp;</p>
+                    <input type="radio" name="weightLifting" value="yes" checked>Yes
+                    <input type="radio" name="weightLifting" value="no">No
+                </div>
+                <br />
+                <!-- age -->
+                <div class="form-card">
+                    <label for="age">Age &nbsp;&nbsp;&nbsp;</label>
+                    <input id="age" type="number" maxlength="3" name="age" required>
+                </div>
+                <br />
+                <!-- weight -->
+                <div class="form-card">
+                    <label for="weight">Weight &nbsp;&nbsp;&nbsp;</label>
+                    <input id="weight" type="number" placeholder="kg" maxlength="3" name="weight" required>
+                </div>
+                <br />
+                <!-- height -->
+                <div class="form-card" id="select-metric">
+                    <label for="height">Height &nbsp;&nbsp;&nbsp;</label>
+                    <input id="height-input" type="number" placeholder="cm" name="height" required>
+                    <span id="span-select">
+                        <select class="height-select" id="ft" name="feet">
+                            <option value="4">4ft</option>
+                            <option value="5">5ft</option>
+                            <option value="6">6ft</option>
+                            <option value="7">7ft</option>
+                        </select>
+                        <select class="height-select" id="in" name="inches">
+                            <option value="0">0in</option>
+                            <option value="1">1in</option>
+                            <option value="2">2in</option>
+                            <option value="3">3in</option>
+                            <option value="4">4in</option>
+                            <option value="5">5in</option>
+                            <option value="6">6in</option>
+                            <option value="7">7in</option>
+                            <option value="8">8in</option>
+                            <option value="9">9in</option>
+                            <option value="10">10in</option>
+                            <option value="11">11in</option>
+                        </select>
+                    </span>
+                </div>
+                
+                <br />
+                <!-- activity -->
+                <div class="form-card">
+                    <label for="activity">activity</label>
+                    <select id="activity" name="activity">
+                        <option value="1.2">No/little Exercise (office job)</option>
+                        <option value="1.375">Light Exercise (1-2 days/week)</option>
+                        <option value="1.55">Moderate Exercise (3-5 days/week)</option>
+                        <option value="1.725">Heavy Exercise (6-7 days/week)</option>
+                        <option value="1.9">Athlete (2x per day)</option>
+                    </select>
+                </div>
+                <br />
+                <!-- body fat -->
+                <div class="form-card">
+                    <label for="bf">Body Fat %</label>
+                    <input id="bf" type="number" name="bf" placeholder="15%">
+                    <label for="bf1"> ( optional ) </label>
+                </div>
+                <br />
+                <!-- submit -->
+                <div class="form-card">
+                    <input type="submit" value="calculate!">
+                </div>
+            </form>
+            <hr />
+            <p id="form-comment">Got any questions? Send me an email at masouch@cs.ihu.gr and don't forget to check the FAQ!</p>
+        </div>
+
+        <div id="calc">
+            <h2>How do we calculate the result?</h2>
+            <p>We use the Mifflin-St Jeor formula which is currently the most accurate formula to calculate your calories. To calculate and create a daily plan for you, we have an already predifined plan, from which we change the values so it is custom for you.</p>
+        </div>
+
+        <footer>
+            <p id="copy">&copy;2024 NutritionProject. All rights reserved.</p>
+            <div id="footer-links">
+                <a href="/terms">Terms</a>
+                <a href="/privacy">Privacy</a>
+                <a href="/contact">Contact</a>
+            </div>
+        </footer>
+
+        <script>
+            var imperialBTN = document.querySelector('#imperial');
+            var metricBTN = document.querySelector('#metric');
+            var body = document.querySelector("body");
+            var weight = document.getElementById("weight");
+            var heightInp = document.querySelector("#height-input");
+            var heightSel = document.querySelector("#span-select");
+
+            imperialBTN.addEventListener("click",() => {
+                weight.placeholder = "lbs";
+                heightInp.style.display = "none";
+                heightSel.style.display = "inline";
+            });
+
+            metricBTN.addEventListener("click", () => {
+                weight.placeholder = "kg";
+                heightInp.style.display = "inline";
+                heightSel.style.display = "none";
+            });
+
+        </script>
+    </body>
+</html>

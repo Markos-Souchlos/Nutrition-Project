@@ -1,0 +1,31 @@
+footer{
+    background-color: rgb(48, 60, 175);
+    margin:0px;
+    margin-top:30px;
+    padding:10px;
+    display:flex;
+    justify-content: space-between;
+}
+
+#copy{
+    color:rgb(150 150 150);
+    margin-left:30px;
+}
+
+#footer-links{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    width:300px;
+}
+
+a{
+    color:white;
+    text-decoration: none;
+}
+
+a:hover{
+    cursor:pointer;
+    text-decoration: underline;
+
+}

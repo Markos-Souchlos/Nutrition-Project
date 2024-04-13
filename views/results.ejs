@@ -1,0 +1,440 @@
+
+<head>
+    <title>Your results</title>
+    <link rel="stylesheet" href="results.css" >
+</head>
+    <body>
+
+        <%- include("partials/header.ejs") %>
+
+        <h1>Your Results</h1>
+
+        <%var act; 
+        var bmi = Math.round((kg/((cm/100)**2))*10)/10;
+        var bmiStatus;
+        var martBerkForm,martBodyFat;
+        var idealW;
+        var i,message="",lessAccurate;
+        var meal;
+
+        //create meal plan
+        var macros = {
+            cal:{gr:0,perc:0},
+            prot:{gr:0,perc:0},
+            fats:{gr:0,perc:0},
+            carbs:{gr:0,perc:0}
+        };
+        var plan = {
+            egg:150,
+            chickenBreast:250,
+            lentils:100,
+            potato:199.5,
+            tomatoJuice:50,
+            rice:200,
+            oil:70, //70
+            proteinPowder:30 //30
+        };
+        var food = {
+            egg: {cal:140,prot:12.5,fats:9.5,carbs:0.7,incr:50},
+            chickenBreast: {cal:165,prot:31,fats:3.6,carbs:0,incr:20},
+            lentils: {cal:298,prot:24,fats:2,carbs:31,incr:10},
+            potato: {cal:74,prot:1.8,fats:0,carbs:17.5,incr:20},
+            tomatoJuice: {cal:25,prot:1.5,fats:0.3,carbs:4,incr:10},
+            rice: {cal:342,prot:7,fats:0.9,carbs:76,incr:20},
+            spaggeti: {cal:360,prot:12,fats:1.5,carbs:73.6,incr:10},
+            oil: {cal:884,prot:0,fats:100,carbs:0,incr:5},
+            proteinPowder: {cal:370,prot:74,fats:5.6,carbs:6,incr:5}
+        };
+
+        function calculateMeal(obj) {
+            var meal = {
+                cal:0,
+                prot:0,
+                fats:0,
+                carbs:0
+            };
+            
+            for (key in obj) {
+                meal.cal += food[key].cal*obj[key]/100;
+                meal.prot += food[key].prot*obj[key]/100;
+                meal.fats += food[key].fats*obj[key]/100;
+                meal.carbs += food[key].carbs*obj[key]/100;
+            }
+
+            return meal;
+        }
+
+        function calculateMacros() { 
+
+            macros.cal.gr = 0;
+            macros.prot.gr = 0;
+            macros.fats.gr = 0;
+            macros.carbs.gr = 0;
+
+            for (var key in plan) {
+                if (plan.hasOwnProperty(key)) {
+                    macros.cal.gr += food[key].cal*plan[key]/100;
+                    macros.prot.gr += food[key].prot*plan[key]/100;
+                    macros.fats.gr += food[key].fats*plan[key]/100;
+                    macros.carbs.gr += food[key].carbs*plan[key]/100
+                }
+            }
+
+            macros.cal.perc = Math.round(macros.cal.gr*100/cal);
+            macros.prot.perc = Math.round(macros.prot.gr*100/prot);
+            macros.fats.perc = Math.round(macros.fats.gr*100/fats);
+            macros.carbs.perc = Math.round(macros.carbs.gr*100/carbs);
+        }
+
+        function worstPercentage() {
+            lessAccurate = { attr: null, value: 0 };
+            
+            for (const key in macros) {
+                if (macros.hasOwnProperty(key)) {
+                    const difference = Math.abs(100-macros[key].perc);
+                    if (difference > lessAccurate.value) {
+                        lessAccurate.attr = key;
+                        lessAccurate.value = difference;
+                    }
+                }
+            }
+            lessAccurate.value = macros[lessAccurate.attr].perc;
+            return lessAccurate.attr;
+        }
+
+        function checkMacros() {
+            if ((Math.abs(macros.cal.gr-cal)>=30) || (Math.abs(macros.fats.gr-fats)>=10)
+                || (Math.abs(macros.carbs.gr-carbs)>=10) || (Math.abs(macros.prot.gr-prot)>=5)) {
+                    return false;
+            }
+        }
+
+        calculateMacros();
+        i = 0;
+        while (i<100) {
+            //PROTEIN
+            if (macros.prot.perc>=105 || macros.prot.perc<=95) {
+                if (macros.prot.perc>=105) {
+                    if (plan.proteinPowder>=5) {
+                        plan.proteinPowder -=5;
+                    } else if (plan.chickenBreast>100) {
+                        if (macros.prot.gr-prot>30 && plan.lentils>0) {
+                            plan.lentils = 0;
+                        } else if (macros.prot.gr-prot>=6.25 && plan.egg>=50 && plan.lentils==0) {
+                            plan.egg -= 50;
+                        } else {
+                            plan.chickenBreast -= 10;
+                        }
+                    }
+                } else if (macros.prot.perc<=95) {
+                    if (plan.chickenBreast<=480) {
+                        plan.chickenBreast += 20;
+                    } else if (plan.proteinPowder<=75) {
+                        plan.proteinPowder += 5;
+                    }
+                } 
+            } else {
+                //FATS
+                if (worstPercentage()=="fats" || macros.fats.pec==macros.carbs.perc) {
+                    if (macros.fats.perc>=105) {
+                        if (plan.oil>=5) {
+                            plan.oil -= 5;
+                        }
+                    } else if (macros.fats.perc<=95) {
+                        if (plan.oil<=115) {
+                            plan.oil += 5;
+                        }
+                    }
+                    //CARBS
+                } else if (worstPercentage()=="carbs") {
+                    if (macros.carbs.perc>=105) {
+                        if (plan.potato>plan.rice) {
+                            plan.potato-=20;
+                        } else if (plan.rice>plan.potato) {
+                            plan.rice -=20;
+                        }
+                    } else if (macros.carbs.perc<=95) {
+                        if (plan.potato<plan.rice) {
+                            plan.potato+=20;
+                        } else if (plan.rice<plan.potato) {
+                            plan.rice +=20;
+                        }
+                    }
+                }
+            }
+            calculateMacros();
+            i++;
+        }
+
+        calculateMacros();
+        worstPercentage();
+
+
+
+        if (gender=="male") {
+            idealW = Math.round((52+1.9*((cm-152.4)/2.54))*10)/10;
+        } else {
+            idealW = Math.round((49+1.5*((cm-152.4)/2.54))*10)/10;
+        }
+
+        if (cm<165) {
+            martBerkForm = cm-96;
+        } else if (cm>=165 && cm<=175) {
+            martBerkForm = cm-97;
+        } else if (cm>175 && cm<=185) {
+            martBerkForm = cm-98;
+        } else if (cm>185) {
+            martBerkForm = cm-99;
+        }
+
+        martBodyFat = martBerkForm*0.05;
+
+        if (bmi>=0 && bmi<=18.5) {
+            bmiStatus = "underweight";
+        } else if (bmi>18.5 && bmi<25) {
+            bmiStatus = "healthy";
+        } else if (bmi>=25 && bmi<30) {
+            bmiStatus = "overweight";
+        } else if (bmi>=30 && bmi<40) {
+            bmiStatus = "obese";
+        } else if (bmi>=40) {
+            bmiStatus = "severely obese";
+        } else {
+            bmiStatus = "error";
+        }
+
+        if (activity==1.2) {
+            act = "no/little exercise";
+        } else if (activity==1.375) {
+            act = "light exercise";
+        } else if (activity==1.55) {
+            act = "moderate exercise";
+        } else if (activity==1.725) {
+            act = "heavy exercise";
+        } else if (activity==1.9) {
+            act = "athlete exercise";
+        }%>
+
+        
+        <p id="info">You are a <%=age%> year old <%=gender%> which weights <%=wStr%>, is <%=hStr%> tall with <%=act%> and <%=preference%></p>
+
+        <div id="kcal">
+            <div>
+                <h2> <%= cal %></h2><p> cal/day</p>     
+            </div>
+            <hr>
+            <div>
+                <h2> <%=cal*7%></h2><p> cal/week</p>    
+            </div>
+        </div>
+        <p id="bmr-desc">Your Basic Metabolic Rate is <%=bmr%> calories</p>
+
+        
+        <div id="buttons">
+            <button id="lose">Lose Weight</button>
+            <button id="maintain">Maintain Weight</button>
+            <button id="gain">Gain Weight</button>
+        </div>
+        <hr id="blue-hr">
+
+        <div id="macros">
+            <p>Protein: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=prot%>gr</p>
+            <p>Fats: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=fats%>gr</p>
+            <p>Carbs: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <%=carbs%>gr</p>
+        </div>
+
+        <br />
+        <br />
+        <br />
+
+        <h2>Your calories based on your activity</h2>
+        <div id="bmr-container">
+            <div><p>Basic Metabolic Rate:</p><p> <%=bmr%> calories</p></div>
+            <div><p>No/little exercise:</p><p> <%=Math.round(bmr*1.2)%> calories</p></div>
+            <div><p>Light exercise:</p><p> <%=Math.round(bmr*1.375)%> calories</p></div>
+            <div><p>Moderate exercise:</p><p> <%=Math.round(bmr*1.55)%> calories</p></div>
+            <div><p>Heavy exercise:</p><p> <%=Math.round(bmr*1.725)%> calories</p></div>
+            <div><p>Athlete:</p><p> <%=Math.round(bmr*1.9)%> calories</p></div>
+        </div>
+        
+
+        <div id="bmi-bf-container" class="borderize">
+            <div id="bmi-container" class="borderize">
+                <h2>Your BMI is <%=bmi%> which describes you as <%=bmiStatus%></h2>
+                <div><p>18.5 or less</p><p>underweight</p></div>
+                <div><p>18.5 to 25</p><p>healthy</p></div>
+                <div><p>25 to 30</p><p>overweight</p></div>
+                <div><p>30 to 40</p><p>obese</p></div>
+                <div><p>40 or more</p><p>severely obese</p></div>
+            </div>
+        
+            <div id="bf-container">
+                <h2>Body Fat Chart</h2>
+                <table border="4">
+                    <tr>
+                        <th>Category</th>
+                        <th>Men (%)</th>
+                        <th>Women (%)</th>
+                    </tr>
+                    <tr>
+                        <td>Essential fat</td>
+                        <td class="male">2-5%</td>
+                        <td class="female">10-13%</td>
+                    </tr>
+                    <tr>
+                        <td>Athletes</td>
+                        <td class="male">6-13%</td>
+                        <td class="female">14-20%</td>
+                    </tr>
+                    <tr>
+                        <td>Fitness</td>
+                        <td class="male">14-17%</td>
+                        <td class="female">21-24%</td>
+                    </tr>
+                    <tr>
+                        <td>Average</td>
+                        <td class="male">18-24%</td>
+                        <td class="female">25-31%</td>
+                    </tr>
+                    <tr>
+                        <td>Obese</td>
+                        <td class="male">25%+</td>
+                        <td class="female">32%+</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div id="ideals">
+            <h2>Your ideal weight is <%=Math.round((idealW)*10)/10%>kg 
+                (<%=Math.round((idealW*2.20462)*10)/10%>lbs) based on Robinson's formula
+            </h2>
+        </div>
+       
+        <div id="ripped">
+            <h2>How ripped could you get? According to <a href="https://archive.is/xyrPA">Martin Berkhan's formula</a>, 
+                your maximum mascular potential is: 
+            </h2>
+            <div>
+                <p><%=martBerkForm%>kg (<%=Math.round((martBerkForm)*2.20462)%>lbs) at 5% body fat</p> 
+                <p><%=(martBodyFat*2)+martBerkForm%>kg (<%=Math.round((martBerkForm+(martBodyFat*2))*2.20462)%>lbs) at 10% body fat</p>
+                <p><%=(martBodyFat*3)+martBerkForm%>kg (<%=Math.round((martBerkForm+(martBodyFat*3))*2.20462)%>lbs) at 15% body fat</p>
+            </div>
+        </div>
+
+        <h2 id="meal-plan">Meal plan</h2>
+        <p>A meal plan that you could follow designed for your macros specifically could be the following</p>
+
+        <% //MEAL1 %>
+        <div class="meal-container">
+
+            <%meal1 = {
+                potato:plan.potato,
+                oil:plan.oil/3,
+                egg:plan.egg,
+                tomatoJuice:plan.tomatoJuice
+            }%>
+            
+            <h3>Breakfast</h3>
+            <h4>SCRAMBLED EGGS WITH POTATOES</h4>
+            <h5>Ingriedients:</h5>
+            <p class="left"><%=Math.round(plan.potato)%> grams of potatoes, <%=Math.round(plan.oil/3)%>gr oil,
+                    <%=plan.egg/50%> eggs and <%=plan.tomatoJuice%> of tomato Juice
+            </p>
+            <h5>Execution:</h5>
+            <p>Cut the potatoes in small chucks and boil them in a pan until the are soft (~15mins). 
+                Then drain the water from the pan and leave it over the heat while stering until all the water is evaporated. 
+                Next, add the oil and the eggs. Put seasonings (salt,pepper,oregano) and when the eggs are cooked, add the tomato sause.</p>
+            <h5>Macros:</h5>
+            <p>
+                Calories:<%=Math.round(calculateMeal(meal1).cal)%> &nbsp; Protein:<%=Math.round(calculateMeal(meal1).prot)%> 
+                &nbsp; Fats:<%=Math.round(calculateMeal(meal1).fats)%> &nbsp; Carbs:<%=Math.round(calculateMeal(meal1).carbs)%>
+            </p>  
+        </div>
+
+        <% //MEAL2 %>
+        <div class="meal-container">
+
+            <%meal2 = {
+                chickenBreast:plan.chickenBreast,
+                oil:plan.oil/3,
+                rice:plan.rice,
+            }%>
+
+            <h3>Lunch</h3>
+            <h4>CHICKEN WITH RICE</h4>
+            <h5>Ingriedients:</h5>
+            <p><%=Math.round(plan.chickenBreast)%>gr skinless chicken breast, <%=Math.round(plan.oil/3)%>gr olive oil,
+                    <%=plan.rice%> rice
+            </p>
+            <h5>Execution:</h5>
+            <p>
+                Boil the chicken on a pot for 45mins. After that, remove the chicken from the pot and place in the same water 
+                that you cooked the chicken the rice. If you want, instead of rice you can put pasta instead of rice. 
+                Keep stirring until they are done and after put the pasta in the plate with the chicken. Finally, add 
+                spices and the olive oil.  
+            </p>
+            <h5>Macros:</h5>
+            <p>
+                Calories:<%=Math.round(calculateMeal(meal2).cal)%> &nbsp; Protein:<%=Math.round(calculateMeal(meal2).prot)%> 
+                &nbsp; Fats:<%=Math.round(calculateMeal(meal2).fats)%> &nbsp; Carbs:<%=Math.round(calculateMeal(meal2).carbs)%>
+            </p>  
+        </div>
+
+        <% //MEAL3 %>
+        <div class="meal-container">
+
+            <%meal3 = {
+                lentils:plan.lentils,
+                oil:plan.oil/3
+            }%>
+
+            <h3>Dinner</h3>
+            <h4>LENTILS</h4>
+            <h5>Ingriedients:</h5>
+            <p><%=Math.round(plan.lentils)%>gr lentils, <%=Math.round(plan.oil/3)%>gr olive oil
+            </p>
+            <h5>Execution:</h5>
+            <p>This meal is very easy to cook. Boil the lentils in a small pot. 
+                When they are soft (~30mins) put your seasonings (salt, pepper, oregano) and the olive oil. 
+                The reason why add the olive oil at last, is because we want to avoid evaporation while cooking it and 
+                we dont want to leave oil in our utentils. Oil is a very calorie dense food</p>
+            <h5>Macros:</h5>
+            <p>
+                Calories:<%=Math.round(calculateMeal(meal3).cal)%> &nbsp; Protein:<%=Math.round(calculateMeal(meal3).prot)%> 
+                &nbsp; Fats:<%=Math.round(calculateMeal(meal3).fats)%> &nbsp; Carbs:<%=Math.round(calculateMeal(meal3).carbs)%>
+            </p>  
+        </div>
+
+        <%//information%>
+        <div class="meal-container" id="debug">
+            <div>
+                <h3>DEBUGING</h3>
+                <p style="margin-top:40px; background-color: rgb(103, 0, 134);">Calories: <%=Math.round(macros.cal.gr)%> Protein: <%=Math.round(macros.prot.gr)%> Fats: <%=Math.round(macros.fats.gr)%> Carbs: <%=Math.round(macros.carbs.gr)%></p>
+                <p style="margin-top:40px; background-color: red;">Less Accurate: <%=lessAccurate.attr%> <%=lessAccurate.value%>%</p>
+                <p style="margin-top:40px; background-color: rgb(10, 88, 0);">
+                    Calories: <%=macros.cal.perc%>% 
+                    Protein: <%=macros.prot.perc%>% 
+                    Fats: <%=macros.fats.perc%>% 
+                    Carbs: <%=macros.carbs.perc%>% 
+                </p>
+                <p style="margin-top:40px; background-color: blue;">Message: <%=message%></p>
+                <p style="margin-top:60px;">Egg: <%=plan.egg%> Chicken Breast: <%=plan.chickenBreast%>
+                    lentils: <%=plan.lentils%> Potato <%=plan.potato%> Rice <%=plan.rice%>
+                    TomatoJuice <%=plan.tomatoJuice%> 
+                    Oil <%=plan.oil%> Powder <%=plan.proteinPowder%>
+                </p>
+            </div>
+            <div>
+                
+            </div>
+            <div>
+                
+            </div>    
+        </div>
+
+
+        <%- include("partials/footer.ejs") %>
+
+    </body>
+</html>

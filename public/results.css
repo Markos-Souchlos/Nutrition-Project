@@ -1,0 +1,237 @@
+body {
+    text-align: center;
+}
+
+h1 {
+    margin-top:40px;
+    font-size :35px;
+    color: blue;
+}
+
+p {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#info {
+    margin-top: 30px;
+}
+
+#kcal {
+    margin:100px auto;
+    width:300px;
+    border:5px solid rgb(24, 34, 121);
+    border-radius: 30px;
+    /* background-color: rgb(117, 117, 255); */
+}
+
+#kcal div {
+    padding:0px;
+    margin:20px;
+    font-weight: bold;
+}
+
+#kcal div h2{
+    color: blue;
+    display: inline;
+    font-size: 40px;
+}
+
+#kcal p {
+    display:inline;
+    font-size: 15px;
+}
+
+#kcal hr {
+    width:100%;
+    height:5px;
+    border:none;
+    background-color: rgb(24, 34, 121);
+}
+
+#bmr-desc {
+    margin-bottom:100px;
+}
+
+#buttons {
+    margin-bottom:58px;
+    width:75%;
+    max-width: 800px;
+    min-width:400px;
+    height:58px;
+    margin:auto;
+    display:flex;
+    justify-content: space-between;
+    position:relative;
+}
+
+button {
+    border: 5px solid rgb(24, 34, 121);
+    border-bottom:none;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-bottom:0px;
+    padding:20px;
+    color:white;
+    background-color: rgb(10 10 10);
+    position:absolute;
+    min-width: 130px;
+}   
+
+button:hover {
+    cursor:pointer;
+    background-color: rgb(30 30 30);
+}
+
+
+#maintain {
+    left: 50%;
+    transform: translate(-50%, 0%);
+    height:63px;
+    z-index:1;
+}
+
+#gain {
+    right:0%;
+    z-index:1;
+    height:58px;
+}
+
+#lose {
+    z-index: 1;
+    height:58px;
+}
+
+hr {
+    border:none;
+    height:5px;
+    margin:0px;
+}
+#blue-hr {
+    background-color: rgb(24, 34, 121);
+}
+
+
+#macros{
+    padding:5px 20px;
+    border:5px solid rgb(24, 34, 121);
+    border-radius: 40px;
+    width:250px;
+    margin:80 auto 50;
+}
+
+#macros p {
+    padding:0px;
+    text-align: left;
+    font-size: 25px;
+}
+
+#macros p span {
+    text-align: right;
+}
+
+#bmr-container div {
+    display:flex;
+    justify-content: space-between;
+    width:500px;
+    margin:15px auto;
+    border-bottom:1px solid grey;
+    padding-bottom:0px;
+    height:35px;
+}
+
+
+#bmi-bf-container {
+    width:80%;
+    max-width: 900px;
+    margin:80px auto;
+    display: flex;
+}
+
+#bmi-container {
+    margin:0px;
+    flex:1;
+    padding: 20px;
+}
+
+#bmi-container div {
+    margin:auto;
+    display: flex;
+    width:300px;
+    justify-content: space-between;
+    border-bottom:1px solid grey;
+}
+
+#bf-container {
+    margin:0px;
+    flex:1;
+    padding:20px;
+}
+
+table {
+    margin:auto;
+    height:290px;
+}
+
+#ideals {
+    margin-top:0px;
+}
+
+#ripped {
+    margin:100px auto 80px;
+    max-width: 500px;
+    width:80%;
+    height:228px;
+}
+
+#ripped h2 {
+    font-size: 20px;
+}
+
+#ripped div {
+    margin-top:30px;
+    width:100%;
+}
+
+#ripped div p {
+    font-size: 18px;
+    border-bottom:1px solid blue;
+    margin:20px auto;
+    width: 80%;
+}
+
+#meal-plan {
+    font-size: 40px;
+}
+
+.meal-container {
+    margin:50px auto;
+    border-radius: 30px;
+    border:1px solid blue;
+    width:80%;
+    max-width: 500px;
+    padding-bottom: 40px;
+}
+
+h4 {
+    text-decoration:2px underline blue;
+}
+
+.meal-container  h5, .meal-container p {
+    text-align:left;
+    width:90%;
+    margin:auto;
+}
+
+.meal-container  h5 {
+    margin:25px auto 10px;
+    font-size: 18px;
+}
+
+.meal-container  p {
+    margin:auto;
+    width:90%;
+}
+
+#debug {
+    display:none;
+}

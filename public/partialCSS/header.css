@@ -1,0 +1,39 @@
+body{
+    margin:0px;
+    background-color: rgb(10 10 10);
+    color:white;
+}
+
+#header{
+    background-color: rgb(24, 34, 121);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin:0px;
+    height:70px;
+}
+
+
+#homepage{
+    font-size: 20px;
+    margin-left: 30px;
+}
+
+#links{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width:200px;
+    height:100%;
+    font-size: 20px;
+    margin-right: 30px;
+}
+
+.nav-link{
+    padding:22px 10px;
+}
+.nav-link:hover{
+    cursor:pointer;
+    background-color: rgb(44, 57, 173);
+    text-decoration:none;
+}
