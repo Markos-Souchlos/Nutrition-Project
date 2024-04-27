@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const port = 3000;
+const port = 5500;
 var system,age,kg,cm,gender,bf,activity,cal,bodybuilding,liftsString;
 var inches,feet,weightSTRING,heightSTRING;
 var protein,carbs,fats,remCal;

@@ -1,6 +1,6 @@
 body{
     margin:0px;
-    background-color: rgb(10 10 10);
+    background-color: rgb(15 15 15);
     color:white;
 }
 
@@ -11,6 +11,7 @@ body{
     align-items: center;
     margin:0px;
     height:70px;
+    width:100%;
 }
 
 
@@ -26,7 +27,7 @@ body{
     width:200px;
     height:100%;
     font-size: 20px;
-    margin-right: 30px;
+    margin-right: 60px;
 }
 
 .nav-link{
@@ -36,4 +37,28 @@ body{
     cursor:pointer;
     background-color: rgb(44, 57, 173);
     text-decoration:none;
+}
+
+@media (max-width:500px) {
+
+    h2 {
+        font-size: 20px;
+    }
+
+    #links {
+        font-size: 15px;
+        margin-right:0px;
+    }
+
+    footer {
+        font-size:15px;
+    }
+
+    #copy {
+        font-size: 10px;
+    }
+
+    #homepage {
+        font-size:15px;
+    }
 }
