@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -132,7 +133,8 @@ hr {
 #bmr-container div {
     display:flex;
     justify-content: space-between;
-    width:500px;
+    width:90%;
+    max-width: 600px;
     margin:15px auto;
     border-bottom:1px solid grey;
     padding-bottom:0px;
@@ -234,4 +236,17 @@ h4 {
 
 #debug {
     display:none;
+}
+
+
+
+@media screen and (max-width:900px) {
+   
+    #bmi-bf-container {
+        display: block;
+    }
+
+    #meal-plan {
+        margin-top:250px;
+    }
 }
